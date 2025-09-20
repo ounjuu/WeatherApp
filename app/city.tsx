@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
+import { OPENWEATHER_API_KEY } from "@env";
+
 export default function CityScreen() {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState<any>(null);
@@ -19,7 +21,7 @@ export default function CityScreen() {
     null
   );
 
-  const API_KEY = "여기에_OpenWeatherMap_API_KEY"; // ← 꼭 넣으세요!
+  const API_KEY = OPENWEATHER_API_KEY;
 
   const fetchWeather = async () => {
     if (!city) return;

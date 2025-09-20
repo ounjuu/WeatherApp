@@ -3,12 +3,14 @@ import * as Location from "expo-location";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 
+import { OPENWEATHER_API_KEY } from "@env";
+
 export default function HomeScreen() {
   const [location, setLocation] = useState<any>(null);
   const [weather, setWeather] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  const API_KEY = "여기에_OpenWeatherMap_API_KEY";
+  const API_KEY = OPENWEATHER_API_KEY;
 
   useEffect(() => {
     (async () => {
