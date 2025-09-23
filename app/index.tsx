@@ -3,14 +3,14 @@ import * as Location from "expo-location";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 
-import { OPENWEATHER_API_KEY } from "@env";
-
 export default function HomeScreen() {
   const [location, setLocation] = useState<any>(null);
   const [weather, setWeather] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  const API_KEY = OPENWEATHER_API_KEY;
+  // Expo 환경변수 사용
+  const API_KEY = process.env.EXPO_PUBLIC_OPENWEATHER_API_KEY;
+  console.log("API_KEY:", API_KEY);
 
   useEffect(() => {
     (async () => {
@@ -23,11 +23,17 @@ export default function HomeScreen() {
       let loc = await Location.getCurrentPositionAsync({});
       setLocation(loc);
 
-      const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${loc.coords.latitude}&lon=${loc.coords.longitude}&units=metric&appid=${API_KEY}`
-      );
-      const data = await res.json();
-      setWeather(data);
+      try {
+        const res = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${loc.coords.latitude}&lon=${loc.coords.longitude}&units=metric&appid=${API_KEY}`
+        );
+        const data = await res.json();
+        console.log("Weather data:", data);
+        setWeather(data);
+      } catch (err) {
+        console.error(err);
+      }
+
       setLoading(false);
     })();
   }, []);

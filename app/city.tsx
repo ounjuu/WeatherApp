@@ -11,8 +11,6 @@ import {
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
-import { OPENWEATHER_API_KEY } from "@env";
-
 export default function CityScreen() {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState<any>(null);
@@ -21,7 +19,9 @@ export default function CityScreen() {
     null
   );
 
-  const API_KEY = OPENWEATHER_API_KEY;
+  // Expo 환경변수 사용
+  const API_KEY = process.env.EXPO_PUBLIC_OPENWEATHER_API_KEY;
+  console.log("API_KEY:", API_KEY);
 
   const fetchWeather = async () => {
     if (!city) return;
@@ -31,6 +31,8 @@ export default function CityScreen() {
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
       );
       const data = await res.json();
+      console.log("Weather data:", data);
+
       if (data.coord) {
         setLocation({ lat: data.coord.lat, lon: data.coord.lon });
       }
@@ -68,7 +70,6 @@ export default function CityScreen() {
         </View>
       )}
 
-      {/* Platform.OS !== 'web' 조건 추가 */}
       {Platform.OS !== "web" && location && (
         <MapView
           style={styles.map}
